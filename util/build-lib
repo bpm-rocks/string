@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cd "${0%/*}/.."
+
+echo "#!/usr/bin/env bash"
+
+for F in lib/*; do
+    tail -n +2 "$F"
+    echo ""
+    echo ""
+done

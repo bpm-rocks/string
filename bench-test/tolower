@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include bench
+bpm::include string
+
+bench::test::tolower-bash42() {
+    string::toLower result "Thing One And Thing Two Adventured"
+}
+
+bench::test::tolower-fallback() {
+    string::toLowerFallback result "Thing One And Thing Two Adventured"
+}
+
+bench::test::tolower-fallback-unicode() {
+    string::toLowerFallback result "Thing Onë And Thing Two Adventured"
+}
+
+bench::auto

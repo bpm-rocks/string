@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Generate the string::toLower and string::toUpper functions from the
+# UnicodeData.txt database, available at
+# ftp://ftp.unicode.org/Public/9.0.0/ucd/UnicodeData.txt
+#
+# $1 - Field number to use in UnicodeData.txt (12 = uppercase, 13 = lowercase)
+# $2 - Fragment template prefix
+
+if [[ "${BASH_VERSINFO[0]}" -lt 4 ]] || [[ "${BASH_VERSINFO[0]}" -eq 4 && "${BASH_VERSINFO[1]}" -lt 2 ]]; then
+    echo "ERROR: You must use at least Bash 4.2 to run this file." >&2
+
+    exit 1
+fi
+
+cd "${0%/*}/.."
+
+. lib/split
+cat "fragments/$2.pre"
+
+while read line; do
+    # The lines are delimited by semicolons. This is like a worse form of
+    # string::split
+    fields=()
+
+    while [[ "$line" == *";"* ]]; do
+        fields[${#fields[@]}]=${line%%";"*}
+        line=${line#*;}
+    done
+
+    fields[${#fields[@]}]=$line
+
+    if [[ -n "${fields[$1]-}" ]]; then
+        # Add necessary padding
+        from=${fields[0]}
+
+        while [[ "${#from}" -lt 8 ]]; do
+            from="0$from"
+        done
+
+        eval "from=\$'\\U$from'"
+        to=${fields[$1]}
+        
+        while [[ "${#to}" -lt 8 ]]; do
+            to="0$to"
+        done
+
+        eval "to=\$'\\U$to'"
+        echo "        string=\${string//$from/$to}"
+    fi
+done < <(grep -v ";;;$" UnicodeData.txt)
+
+cat "fragments/$2.post"

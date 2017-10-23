@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Trim strings from the front or end of a string.
+#
+# $1   - Name of destination variable.
+# $2   - The string.
+# $3   - true/false - trim front?
+# $4   - true/false - trim end?
+# $5-@ - What to trim, each as separate arguments.
+#
+# Returns nothing.
+string::trimStrings() {
+    local back current front last remove target
+
+    target=${1-}
+    current=${2-}
+    front=${3-}
+    back=${4-}
+    last=""
+    shift 4 # Remove target, string, trim front flag, trim end flag
+
+    while [[ "$current" != "$last" ]]; do
+        last=$current
+
+        for remove in "$@"; do
+            $front && current="${current/#$remove}"
+            $back && current="${current/%$remove}"
+        done
+    done
+
+    local "$target" && assign::value "$target" "$current"
+}

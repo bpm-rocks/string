@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include bench
+
+bench::test::loop() {
+    local i
+    lcs="abcdefghijklmnopqrstuvwxyz"
+    ucs="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    input="Change Me To All Capitals"
+    for (( i=0; i<"${#input}"; i++ )) ; do :
+        for (( j=0; j<"${#lcs}"; j++ )) ; do :
+            if [[ "${input:$i:1}" == "${lcs:$j:1}" ]] ; then
+                input="${input/${input:$i:1}/${ucs:$j:1}}" 
+            fi
+        done
+    done
+}
+
+bench::test::explicit() {
+    input="Change Me To All Capitals"
+    input=${input//a/A}
+    input=${input//b/B}
+    input=${input//c/C}
+    input=${input//d/D}
+    input=${input//e/E}
+    input=${input//f/F}
+    input=${input//g/G}
+    input=${input//h/H}
+    input=${input//i/I}
+    input=${input//j/J}
+    input=${input//k/K}
+    input=${input//l/L}
+    input=${input//m/M}
+    input=${input//n/N}
+    input=${input//o/O}
+    input=${input//p/P}
+    input=${input//q/Q}
+    input=${input//r/R}
+    input=${input//s/S}
+    input=${input//t/T}
+    input=${input//u/U}
+    input=${input//v/V}
+    input=${input//w/W}
+    input=${input//x/X}
+    input=${input//y/Y}
+    input=${input//z/Z}
+}
+
+bench::auto

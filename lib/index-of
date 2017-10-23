@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Find the first index of a substring.  If not found, sets the index to -1.
+#
+# $1 - Destination variable for the index
+# $2 - Needle
+# $3 - Haystack
+#
+# Returns nothing.
+string::indexOf() {
+    local pos string
+
+    string=${3%%$2*}
+    [[ "$string" == "$3" ]] && pos=-1 || pos=${#string}
+
+    local "${1-}" && assign::value "$1" "$pos"
+}

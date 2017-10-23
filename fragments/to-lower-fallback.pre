@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Converts a string to lowercase. Not locale-aware, but does handle Unicode.
+#
+# $1 - Destination variable name.
+# $2 - String to convert.
+#
+# Returns nothing.
+string::toLowerFallback() {
+    local string
+
+    string=$2
+
+    if [[ "$string" != *[^[:ascii:]]* ]]; then
+        string=${string//A/a}
+        string=${string//B/b}
+        string=${string//C/c}
+        string=${string//D/d}
+        string=${string//E/e}
+        string=${string//F/f}
+        string=${string//G/g}
+        string=${string//H/h}
+        string=${string//I/i}
+        string=${string//J/j}
+        string=${string//K/k}
+        string=${string//L/l}
+        string=${string//M/m}
+        string=${string//N/n}
+        string=${string//O/o}
+        string=${string//P/p}
+        string=${string//Q/q}
+        string=${string//R/r}
+        string=${string//S/s}
+        string=${string//T/t}
+        string=${string//U/u}
+        string=${string//V/v}
+        string=${string//W/w}
+        string=${string//X/x}
+        string=${string//Y/y}
+        string=${string//Z/z}
+    else

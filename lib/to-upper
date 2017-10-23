@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+if [[ "${BASH_VERSINFO[0]}" -gt 4 ]] || [[ "${BASH_VERSINFO[0]}" -eq 4 && "${BASH_VERSINFO[1]}" -ge 2 ]]; then
+    # Converts a string to uppercase. Not locale-aware.
+    #
+    # $1 - Destination variable name.
+    # $2 - String to convert.
+    #
+    # Returns nothing.
+    string::toUpper() {
+        local "${1-}" && assign::value "$1" "${2^^}"
+    }
+fi

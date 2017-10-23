@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Trim leading and trailing whitespace from a string.
+#
+# $1 - Name of variable to store trimmed string.
+# $2 - The string.
+#
+# Returns nothing.
+string::trim() {
+    local result
+
+    string::trimStrings result "$2" true true $'\r' $'\n' $'\t' " "
+
+    local "${1-}" && assign::value "$1" "$result"
+}

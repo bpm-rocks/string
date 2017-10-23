@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Converts a string to uppercase. Not locale-aware, but does handle Unicode.
+#
+# $1 - Destination variable name.
+# $2 - String to convert.
+#
+# Returns nothing.
+string::toUpperFallback() {
+    local string
+
+    string=$2
+
+    if [[ "$string" != *[^[:ascii:]]* ]]; then
+        string=${string//a/A}
+        string=${string//b/B}
+        string=${string//c/C}
+        string=${string//d/D}
+        string=${string//e/E}
+        string=${string//f/F}
+        string=${string//g/G}
+        string=${string//h/H}
+        string=${string//i/I}
+        string=${string//j/J}
+        string=${string//k/K}
+        string=${string//l/L}
+        string=${string//m/M}
+        string=${string//n/N}
+        string=${string//o/O}
+        string=${string//p/P}
+        string=${string//q/Q}
+        string=${string//r/R}
+        string=${string//s/S}
+        string=${string//t/T}
+        string=${string//u/U}
+        string=${string//v/V}
+        string=${string//w/W}
+        string=${string//x/X}
+        string=${string//y/Y}
+        string=${string//z/Z}
+    else

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Hex encodes a string and writes it to stdout.
+#
+# $1 - Target variable name for the hex encoded string.
+# $2 - The string to encode.
+#
+# Returns nothing.
+string::toHex() {
+    local hex pos result
+
+    result=
+    pos=0
+
+    while [[ "$pos" -lt "${#1}" ]]; do
+        printf -v hex "%02x" "'${1:$pos:1}"
+        result+=$hex
+    done
+
+    local "${1-}" && assign::value "$1" "$result"
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+. bpm
+bpm::include assign

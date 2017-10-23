@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include unittest
+unittest::run
+
+unittest::case::setup() {
+    . ../libstring
+}
+
+unittest::case::toLower-e() {
+    local result
+    string::toLower result "E"
+    [[ "$result" == "e" ]]
+}
+
+unittest::case::toLowerFallback-e() {
+    local result
+    string::toLowerFallback result "E"
+    [[ "$result" == "e" ]]
+}
+
+unittest::case::toLower-umlaut() {
+    local result
+    string::toLower result "Ä"
+    [[ "$result" == "ä" ]]
+}
+
+unittest::case::toLowerFallback-umlaut() {
+    local result
+    string::toLowerFallback result "Ä"
+    [[ "$result" == "ä" ]]
+}
