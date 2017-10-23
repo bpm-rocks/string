@@ -99,8 +99,8 @@ string::toHex() {
     result=
     pos=0
 
-    while [[ "$pos" -lt "${#1}" ]]; do
-        printf -v hex "%02x" "'${1:$pos:1}"
+    while [[ "$pos" -lt "${#2}" ]]; do
+        printf -v hex "%02x" "'${2:$pos:1}"
         result+=$hex
         pos=$((pos + 1))
     done
