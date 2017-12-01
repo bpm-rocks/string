@@ -4,6 +4,33 @@
 bpm::include assign
 
 
+# Convert a string into a safely quoted string that's safe to pass around as an
+# argument.  It is unlikely that this will be necessary for most scripting
+# that's performed because one would need to use `eval` to parse this back to
+# the original value.
+#
+# $1   - Name of the environment variable that should get the result.
+# $2-@ - The value or values to escape.
+#
+# Examples
+#
+#   string::escape exampleResult one two three "four five"
+#   set | fgrep "exampleResult"
+#   # Output:
+#   # exampleResult='one two three four\ five'
+#
+# Returns nothing.
+string::escape() {
+    local escaped target
+
+    target="$1"
+    shift
+    printf -v escaped " %q" "$@" || return $?
+
+    local "$target" && assign::value "$target" "${escaped:1}"
+}
+
+
 # Find the first index of a substring.  If not found, sets the index to -1.
 #
 # $1 - Destination variable for the index

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include unittest
+unittest::run
+
+unittest::setup() {
+    . ../libstring
+}
+
+unittest::case::escape-one() {
+    local result
+
+    string::escape result one
+    [[ "$result" == one ]]
+}
+
+unittest::case::escape-two() {
+    local result
+
+    string::escape result one two
+    [[ "$result" == "one two" ]]
+}
+
+unittest::case::escape-spaces() {
+    local result
+
+    string::escape result "one two"
+    [[ "$result" == "one\\ two" ]]
+}

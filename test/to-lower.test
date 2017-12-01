@@ -3,7 +3,7 @@
 bpm::include unittest
 unittest::run
 
-unittest::case::setup() {
+unittest::setup() {
     . ../libstring
 }
 

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include unittest
+unittest::run
+
+unittest::setup() {
+    . ../libstring
+}
+
+unittest::case::indexOf-first() {
+    local result
+
+    string::indexOf result x "x x x" || return 1
+    [[ "$result" -eq 0 ]]
+}
+
+unittest::case::indexOf-last() {
+    local result
+
+    string::indexOf result yz "abcd wxyz" || return 1
+    [[ "$result" -eq 7 ]]
+}
+
+unittest::case::indexOf-not-found() {
+    local result
+
+    string::indexOf result yz "Mary had a little lamb" || return 1
+    [[ "$result" -eq -1 ]]
+}
