@@ -31,6 +31,37 @@ string::escape() {
 }
 
 
+# Hex decodes a string and writes it to stdout. Any non-hex characters are
+# ignored. Only decodes when there are two hex characters together, thus a
+# hex string of "308" is decoded as simply "0" (hex 0x30) and the last "8"
+# character is ignored.
+#
+# $1 - Target variable name for the hex encoded string.
+# $2 - The string to encode.
+#
+# Returns nothing.
+string::fromHex() {
+    local hex maxPos pos result
+
+    hex=$(
+        shopt -s extglob
+        echo "${2//[^a-fA-F0-9]}"
+    )
+    maxPos=$((${#hex} / 2))
+    result=""
+    pos=0
+
+    while [[ "$pos" -lt "$maxPos" ]]; do
+        result="$result\\x${hex:$pos * 2:2}"
+        pos=$((pos + 1))
+    done
+
+    printf -v result "$result"
+
+    local "${1-}" && assign::value "$1" "$result"
+}
+
+
 # Find the first index of a substring.  If not found, sets the index to -1.
 #
 # $1 - Destination variable for the index
