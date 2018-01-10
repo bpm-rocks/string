@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include unittest
+unittest::run
+
+unittest::setup() {
+    . ../libstring
+}
+
+unittest::case::toHex-empty() {
+    local result
+    string::toHex result ""
+    [[ "$result" == "" ]]
+}
+
+unittest::case::toHex-string() {
+    local result
+    string::toHex result "this is a string"
+    [[ "$result" == "74686973206973206120737472696e67" ]]
+}
