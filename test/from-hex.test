@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include unittest
+unittest::run
+
+unittest::setup() {
+    . ../libstring
+}
+
+unittest::case::fromHex-empty() {
+    local result
+    string::fromHex result ""
+    [[ "$result" == "" ]]
+}
+
+unittest::case::fromHex-string() {
+    local result
+    string::fromHex result "74686973206973206120737472696e67"
+    [[ "$result" == "this is a string" ]]
+}
+
+unittest::case::fromHex-short() {
+    local result
+    string::fromHex result "746"
+    [[ "$result" == "t" ]]
+}
+
+unittest::case::fromHex-non-hex() {
+    local result
+    string::fromHex result "hop 7-4.Z"
+    [[ "$result" == "t" ]]
+}
