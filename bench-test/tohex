@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+. bpm
+bpm::include bench
+
+toHexLoop() {
+    local hex pos result
+
+    result=
+    pos=0
+
+    while [[ "$pos" -lt "${#2}" ]]; do
+        printf -v hex "%02x" "'${2:$pos:1}"
+        result+=$hex
+        pos=$((pos + 1))
+    done
+
+    local "${1-}" && assign::value "$1" "$result"
+}
+
+toHexPrintf() {
+    local hex IFS LC_CTYPE pattern
+
+    IFS=$'\n' # Work around crazy array slicing bug before bash 4.0-rc1.
+    LC_CTYPE=C
+    pattern=${2//?/(.)}
+
+    # Match against a pattern that captures each character. No quotes here.
+    [[ "$2" =~ $pattern ]]
+
+    # Convert to arguments to printf, an escaped apostrophe + the char + a space.
+    printf -v hex "\\\\'%q " "${BASH_REMATCH[@]:1}"
+
+    # Now convert to hex. Do not add quotes to $hex.
+    eval 'printf -v hex "${2//?/%02X}" '"$hex"
+
+    local "$1" && assign::value "$1" "$hex"
+}
+
+echo "Sanity check:"
+
+for input in '0123' '0 1 2' $'\xFF\xAA\x7F\x30\x11\x00'; do
+    set | grep ^input=
+    toHexLoop result "$input"
+    echo "toHexLoop = $result"
+    toHexPrintf result "$input"
+    echo "toHexPrintf = $result"
+done
+
+bench::test::toHexLopo() {
+    toHexLoop result "This is a very long string that I want converted to hexadecimal"
+}
+
+bench::test::toHexPrintf() {
+    toHexPrintf result "This is a very long string that I want converted to hexadecimal"
+}
+
+bench::auto

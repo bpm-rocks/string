@@ -147,23 +147,29 @@ string::split() {
 
 # Hex encodes a string and writes it to stdout.
 #
+# Does not handle NULL characters. Hexadecimal is in capital letters.
+#
 # $1 - Target variable name for the hex encoded string.
 # $2 - The string to encode.
 #
 # Returns nothing.
 string::toHex() {
-    local hex pos result
+    local hex IFS LC_CTYPE pattern
 
-    result=
-    pos=0
+    IFS=$'\n' # Work around crazy array slicing bug before bash 4.0-rc1.
+    LC_CTYPE=C
+    pattern=${2//?/(.)}
 
-    while [[ "$pos" -lt "${#2}" ]]; do
-        printf -v hex "%02x" "'${2:$pos:1}"
-        result+=$hex
-        pos=$((pos + 1))
-    done
+    # Match against a pattern that captures each character. No quotes here.
+    [[ "$2" =~ $pattern ]]
 
-    local "${1-}" && assign::value "$1" "$result"
+    # Convert to arguments to printf, an escaped apostrophe + the char + a space.
+    printf -v hex "\\\\'%q " "${BASH_REMATCH[@]:1}"
+
+    # Now convert to hex. Do not add quotes to $hex.
+    eval 'printf -v hex "${2//?/%02X}" '"$hex"
+
+    local "$1" && assign::value "$1" "$hex"
 }
 
 
