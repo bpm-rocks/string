@@ -154,9 +154,9 @@ string::split() {
 #
 # Returns nothing.
 string::toHex() {
-    local hex IFS LC_CTYPE pattern
+    local cmd hex IFS LC_CTYPE pattern
 
-    IFS=$'\n' # Work around crazy array slicing bug before bash 4.0-rc1.
+    IFS=$' \n' # Work around crazy array slicing bug before bash 4.0-rc1.
     LC_CTYPE=C
     hex=
 
@@ -170,7 +170,7 @@ string::toHex() {
         printf -v hex "\\\\'%q " "${BASH_REMATCH[@]:1}"
 
         # Now convert to hex. Do not add quotes to $hex.
-        eval 'printf -v hex "${2//?/%02X}" '"$hex"
+        eval "printf -v hex '${2//?/%02X}' $hex"
     fi
 
     local "$1" && assign::value "$1" "$hex"
