@@ -16,5 +16,5 @@ unittest::case::toHex-empty() {
 unittest::case::toHex-string() {
     local result
     string::toHex result "this is a string"
-    [[ "$result" == "74686973206973206120737472696e67" ]]
+    [[ "$result" == "74686973206973206120737472696E67" ]]
 }

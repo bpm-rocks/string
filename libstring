@@ -158,16 +158,20 @@ string::toHex() {
 
     IFS=$'\n' # Work around crazy array slicing bug before bash 4.0-rc1.
     LC_CTYPE=C
-    pattern=${2//?/(.)}
+    hex=
 
-    # Match against a pattern that captures each character. No quotes here.
-    [[ "$2" =~ $pattern ]]
+    if [[ -n "$2" ]]; then
+        pattern=${2//?/(.)}
 
-    # Convert to arguments to printf, an escaped apostrophe + the char + a space.
-    printf -v hex "\\\\'%q " "${BASH_REMATCH[@]:1}"
+        # Match against a pattern that captures each character. No quotes here.
+        [[ "$2" =~ $pattern ]]
 
-    # Now convert to hex. Do not add quotes to $hex.
-    eval 'printf -v hex "${2//?/%02X}" '"$hex"
+        # Convert to arguments to printf, an escaped apostrophe + the char + a space.
+        printf -v hex "\\\\'%q " "${BASH_REMATCH[@]:1}"
+
+        # Now convert to hex. Do not add quotes to $hex.
+        eval 'printf -v hex "${2//?/%02X}" '"$hex"
+    fi
 
     local "$1" && assign::value "$1" "$hex"
 }
