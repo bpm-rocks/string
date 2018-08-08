@@ -4,7 +4,7 @@ bpm::include unittest
 unittest::run
 
 unittest::setup() {
-    . ../libstring
+    . ../lib/to-hex
 }
 
 unittest::case::toHex-empty() {
